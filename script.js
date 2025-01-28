@@ -1,66 +1,73 @@
-/************************************************************
- * 경고: 실제 서비스에서는 프론트엔드에 API Key를 노출하면 안 됩니다!
- * 여기서는 테스트/학습용 예시로만 사용하세요.
- ************************************************************/
+/*************************************************************************
+ * 실제 운영 환경에서는 프론트엔드에 API Key를 절대 노출하면 안 됩니다!
+ * 여기서는 학습/테스트 편의를 위해 하드코딩 예시를 보여드립니다.
+ *************************************************************************/
 const OPENAI_API_KEY = "sk-여기에-본인-실제-API키를-넣으세요";
 
 /**
- * "목표별 할 일 8개 생성하기" 버튼 클릭시 실행되는 함수
- * - 1번 비전(가운데)을 확인
- * - 2~9번 목표를 순회하며, GPT에게 할 일 목록을 요청
- * - 각 목표 칸에 결과를 표시
+ * "목표별 할 일 8개 생성하기" 버튼 클릭 → 각 목표(중앙 차트 8칸)에 대해 GPT 호출,
+ * 해당 목표를 중심으로 하는 서브 차트에 '할 일 8개'를 채워넣습니다.
  */
 async function generateTasks() {
-  const vision = document.getElementById("vision").value.trim();
-  if (!vision) {
-    alert("1번 비전(가운데)를 입력해주세요!");
+  const statusEl = document.getElementById("statusMessage");
+  statusEl.textContent = "GPT가 할 일을 생성 중입니다. 잠시만 기다려주세요...";
+
+  // 중앙(5번 차트)의 모든 칸 가져오기
+  const centerChartCells = [];
+  for (let i = 1; i <= 9; i++) {
+    centerChartCells[i] = document.querySelector(`#subChart5Cell${i} input`);
+  }
+
+  // 중앙칸(#5)에 적힌 "메인 비전"
+  const mainVision = centerChartCells[5].value.trim();
+  if (!mainVision) {
+    alert("정중앙(메인 비전)을 입력하세요!");
+    statusEl.textContent = "";
     return;
   }
 
-  // 2~9번 목표 수집
+  // 8개 목표 (주변칸: #1,#2,#3,#4,#6,#7,#8,#9)
   const goals = [];
-  for (let i = 2; i <= 9; i++) {
-    const goalValue = document.getElementById(`goal${i}`).value.trim();
+  const goalCellIndices = [1,2,3,4,6,7,8,9];
+  goalCellIndices.forEach((idx) => {
+    const goalText = centerChartCells[idx].value.trim() || `목표${idx}(미입력)`;
     goals.push({
-      index: i,
-      text: goalValue || `목표${i} (미입력)`,
+      cellIndex: idx, // 중앙차트에서의 위치
+      text: goalText,
     });
-  }
+  });
 
-  // 상태 표시
-  const statusMessageEl = document.getElementById("statusMessage");
-  statusMessageEl.textContent = "GPT가 할 일을 생성 중입니다. 잠시 기다려주세요...";
-
-  // 각 목표마다 GPT에 요청 후 표시
-  for (const goalObj of goals) {
+  // 각 목표에 대해 GPT로 '할 일' 생성하고, 해당 서브 차트에 반영
+  for (const g of goals) {
     try {
-      const tasks = await requestGptForGoal(vision, goalObj.text);
-      displayTasks(goalObj.index, tasks);
+      const tasks = await requestGptForGoal(mainVision, g.text);
+      // g.cellIndex에 해당하는 서브차트(1번~9번 중 하나)의 중앙 칸에 목표를 적고,
+      // 나머지 8칸에 할 일을 표시
+      fillSubChart(g.cellIndex, g.text, tasks);
     } catch (err) {
       console.error(err);
-      displayTasks(goalObj.index, [`❌ 할 일 생성 실패: ${err.message}`]);
+      // 실패시 서브차트에 에러 표시
+      fillSubChart(g.cellIndex, g.text, [
+        `❌ 할 일 생성 실패: ${err.message}`,
+      ]);
     }
   }
 
-  statusMessageEl.textContent = "생성 완료!";
+  statusEl.textContent = "생성 완료!";
 }
 
 /**
- * 특정 목표에 대해 GPT에 "할 일 8개"를 물어보고 결과 문자열 배열을 반환
+ * OpenAI ChatCompletion을 통해 목표에 대한 '할 일' 8개를 생성
  */
-async function requestGptForGoal(vision, goalText) {
+async function requestGptForGoal(mainVision, goalText) {
   const prompt = `
-다음은 내가 이루고자 하는 비전입니다: "${vision}"
+다음은 내가 이루고자 하는 메인 비전입니다: "${mainVision}"
 이를 달성하기 위한 구체적인 목표 중 하나: "${goalText}"
 
-목표 "${goalText}"를 달성하기 위해 도움이 될 만한 구체적인 '할 일' 8개를, 
-1) 형식으로 제시해주세요. 예)
-1) ...
-2) ...
-...
+목표 "${goalText}"를 달성하기 위해 도움이 될 만한 구체적인 '할 일' 8개를,
+"1) ~, 2) ~" 형식으로 짧게 작성해주세요.
 `;
 
-  // OpenAI ChatCompletion API 호출
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -76,35 +83,48 @@ async function requestGptForGoal(vision, goalText) {
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI API 에러: ${response.status} - ${response.statusText}`);
+    throw new Error(`OpenAI API 에러: ${response.status} / ${response.statusText}`);
   }
 
   const data = await response.json();
   const assistantMessage = data.choices[0].message.content.trim();
-  
-  // 줄바꿈 기준으로 분할 (GPT가 "1) ~\n2) ~\n..." 형태로 응답한다고 가정)
-  const lines = assistantMessage.split("\n").map(line => line.trim());
-  // 불필요한 빈 문자열 제거
-  return lines.filter(line => line);
+  // 간단히 줄바꿈 기준으로 분할
+  const lines = assistantMessage.split("\n").map((line) => line.trim());
+  return lines.filter((line) => line); // 빈 줄 제거
 }
 
 /**
- * 생성된 할 일 배열을 해당 목표 셀 내의 <ul>에 표시
+ * 특정 목표를 담당하는 서브 차트(1~4,6~9번)의
+ * 중앙 칸(#5)에 목표를 적고, 주변 8칸(#1,#2,#3,#4,#6,#7,#8,#9)에 GPT 결과를 채워넣는다.
+ *
+ * @param {Number} chartIndex - subChart# (1..9). 5는 중앙 차트이므로 여기서는 제외.
+ * @param {String} goalText
+ * @param {Array<String>} tasks - GPT가 생성한 할 일 목록
  */
-function displayTasks(goalIndex, tasks) {
-  const ulEl = document.getElementById(`tasks${goalIndex}`);
-  if (!ulEl) return;
+function fillSubChart(chartIndex, goalText, tasks) {
+  // 서브 차트 DOM 가져오기
+  const chartEl = document.getElementById(`subChart${chartIndex}`);
+  if (!chartEl) return; // 없으면 스킵
 
-  // 기존 리스트 초기화
-  ulEl.innerHTML = "";
+  // 중앙 칸(#5)에 목표 텍스트 표시
+  const centerCell = chartEl.querySelector(`#subChart${chartIndex}Cell5`);
+  if (centerCell) {
+    centerCell.textContent = goalText;
+    centerCell.classList.add("center");
+  }
 
-  // 새 리스트 항목 채우기
-  tasks.forEach(task => {
-    const li = document.createElement("li");
-    li.textContent = task;
-    ulEl.appendChild(li);
-  });
+  // 나머지 8칸 (#1,#2,#3,#4,#6,#7,#8,#9)에 '할 일' 표시
+  const otherCells = [1,2,3,4,6,7,8,9].filter((v) => v !== 5);
+  for (let i = 0; i < otherCells.length; i++) {
+    const cellId = `subChart${chartIndex}Cell${otherCells[i]}`;
+    const cellEl = chartEl.querySelector(`#${cellId}`);
+    if (!cellEl) continue;
+
+    // 해당 인덱스의 할 일 문구가 있으면 표시, 없으면 빈 칸
+    const taskText = tasks[i] || "";
+    cellEl.textContent = taskText;
+  }
 }
 
-// 이벤트 등록
+// 버튼 이벤트 등록
 document.getElementById("generateBtn").addEventListener("click", generateTasks);
