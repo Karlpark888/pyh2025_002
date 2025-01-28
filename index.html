@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>만다라트 새해 목표</title>
+  <title>만다라트 방식 새해 목표</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,65 +12,76 @@
 
   <!-- 만다라트 3x3 그리드 -->
   <div class="mandal-grid">
-    <!-- 셀1 -->
+    <!-- 2번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal2">2번 목표</label>
       <input type="text" id="goal2" placeholder="목표 2" />
+      <ul class="task-list" id="tasks2"></ul>
     </div>
-    <!-- 셀2 -->
+
+    <!-- 3번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal3">3번 목표</label>
       <input type="text" id="goal3" placeholder="목표 3" />
+      <ul class="task-list" id="tasks3"></ul>
     </div>
-    <!-- 셀3 -->
+
+    <!-- 4번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal4">4번 목표</label>
       <input type="text" id="goal4" placeholder="목표 4" />
+      <ul class="task-list" id="tasks4"></ul>
     </div>
-    <!-- 셀4 -->
+
+    <!-- 5번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal5">5번 목표</label>
       <input type="text" id="goal5" placeholder="목표 5" />
+      <ul class="task-list" id="tasks5"></ul>
     </div>
-    <!-- 셀5: 가운데 비전 -->
+
+    <!-- 1번 비전(가운데) -->
     <div class="mandal-cell center">
       <label for="vision">1번 비전</label>
       <input type="text" id="vision" placeholder="비전(내가 되고 싶은 모습)" />
     </div>
-    <!-- 셀6 -->
+
+    <!-- 6번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal6">6번 목표</label>
       <input type="text" id="goal6" placeholder="목표 6" />
+      <ul class="task-list" id="tasks6"></ul>
     </div>
-    <!-- 셀7 -->
+
+    <!-- 7번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal7">7번 목표</label>
       <input type="text" id="goal7" placeholder="목표 7" />
+      <ul class="task-list" id="tasks7"></ul>
     </div>
-    <!-- 셀8 -->
+
+    <!-- 8번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal8">8번 목표</label>
       <input type="text" id="goal8" placeholder="목표 8" />
+      <ul class="task-list" id="tasks8"></ul>
     </div>
-    <!-- 셀9 -->
+
+    <!-- 9번 목표 셀 -->
     <div class="mandal-cell">
       <label for="goal9">9번 목표</label>
       <input type="text" id="goal9" placeholder="목표 9" />
+      <ul class="task-list" id="tasks9"></ul>
     </div>
   </div>
 
-  <!-- GPT 생성 기능 -->
-  <div class="api-section">
-    <p>
-      <strong>OpenAI API Key</strong>를 입력해주세요 (학습·테스트용으로만 사용).
-      <input type="password" id="apiKey" placeholder="sk-..." />
-    </p>
-    <button id="generateBtn">목표별 할 일 8개 생성하기</button>
-  </div>
+  <!-- 버튼 -->
+  <button id="generateBtn">목표별 할 일 8개 생성하기</button>
 
-  <!-- 생성된 할 일 출력 영역 -->
-  <div id="taskResults"></div>
+  <!-- 결과 안내 메세지 -->
+  <div id="statusMessage"></div>
 
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
