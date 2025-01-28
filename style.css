@@ -1,0 +1,93 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: sans-serif;
+    margin: 20px;
+    background: #f9f9f9;
+    color: #333;
+  }
+  
+  h1 {
+    margin-bottom: 10px;
+  }
+  
+  /* 만다라트 3x3 그리드 스타일 */
+  .mandal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    max-width: 600px;
+  }
+  
+  .mandal-cell {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    padding: 10px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .mandal-cell label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .mandal-cell input {
+    width: 90%;
+    padding: 5px;
+  }
+  
+  /* 가운데(비전) 스타일 강조 */
+  .center {
+    background-color: #fffbcc;
+    border-color: #f2e695;
+  }
+  
+  /* API 키 & 버튼 영역 */
+  .api-section {
+    margin: 20px 0;
+  }
+  
+  #apiKey {
+    width: 300px;
+    margin-left: 10px;
+  }
+  
+  /* 생성된 할 일 출력 영역 */
+  #taskResults {
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+  }
+  
+  .task-block {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  .task-block h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .task-block ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  .task-block li {
+    margin-bottom: 5px;
+  }
+  
