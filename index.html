@@ -2,20 +2,19 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>9×9 만다라트 예시</title>
+  <title>만다라트 방식 새해 목표 (9개의 3×3 차트)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
 <h1>만다라트 방식 새해 목표 (9개의 3×3 차트)</h1>
 <p>
   중앙(5번 차트)의 중앙칸(#5)은 <strong>메인 비전</strong>, 주변 8칸(#1,2,3,4,6,7,8,9)은 <strong>8개 목표</strong>를 입력하세요.<br>
   버튼을 누르면 각 목표에 대해 GPT가 생성한 <em>할 일 8개</em>가 해당 차트에 표시됩니다.
 </p>
 
-<!-- 3×3의 큰 격자(각 칸에 서브 만다라트 3×3가 들어감) -->
+<!-- 큰 3×3 격자 (각 칸이 다시 3×3 만다라트) -->
 <div class="big-grid">
-  <!-- 1번 차트 (왼-위) -->
+  <!-- 1번 차트 -->
   <div class="sub-chart" id="subChart1">
     <div class="cell" id="subChart1Cell1"></div>
     <div class="cell" id="subChart1Cell2"></div>
@@ -28,7 +27,7 @@
     <div class="cell" id="subChart1Cell9"></div>
   </div>
 
-  <!-- 2번 차트 (가운데-위) -->
+  <!-- 2번 차트 -->
   <div class="sub-chart" id="subChart2">
     <div class="cell" id="subChart2Cell1"></div>
     <div class="cell" id="subChart2Cell2"></div>
@@ -41,7 +40,7 @@
     <div class="cell" id="subChart2Cell9"></div>
   </div>
 
-  <!-- 3번 차트 (오른-위) -->
+  <!-- 3번 차트 -->
   <div class="sub-chart" id="subChart3">
     <div class="cell" id="subChart3Cell1"></div>
     <div class="cell" id="subChart3Cell2"></div>
@@ -54,7 +53,7 @@
     <div class="cell" id="subChart3Cell9"></div>
   </div>
 
-  <!-- 4번 차트 (왼-중앙) -->
+  <!-- 4번 차트 -->
   <div class="sub-chart" id="subChart4">
     <div class="cell" id="subChart4Cell1"></div>
     <div class="cell" id="subChart4Cell2"></div>
@@ -67,39 +66,39 @@
     <div class="cell" id="subChart4Cell9"></div>
   </div>
 
-  <!-- 5번 차트 (정중앙) → 메인 비전 & 8개 목표 -->
+  <!-- 5번 차트 (정중앙) → 메인 비전 + 8개 목표 입력칸 -->
   <div class="sub-chart" id="subChart5">
-    <!-- 8칸은 목표, 중앙칸은 비전 -->
+    <!-- 8칸은 목표, 중앙(#5)은 메인 비전 -->
     <div class="cell input-cell" id="subChart5Cell1">
-      <input type="text" placeholder="목표 #1" />
+      <input type="text" placeholder="목표 #1"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell2">
-      <input type="text" placeholder="목표 #2" />
+      <input type="text" placeholder="목표 #2"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell3">
-      <input type="text" placeholder="목표 #3" />
+      <input type="text" placeholder="목표 #3"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell4">
-      <input type="text" placeholder="목표 #4" />
+      <input type="text" placeholder="목표 #4"/>
     </div>
     <div class="cell center input-cell" id="subChart5Cell5">
-      <input type="text" placeholder="메인 비전" />
+      <input type="text" placeholder="메인 비전"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell6">
-      <input type="text" placeholder="목표 #5" />
+      <input type="text" placeholder="목표 #5"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell7">
-      <input type="text" placeholder="목표 #6" />
+      <input type="text" placeholder="목표 #6"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell8">
-      <input type="text" placeholder="목표 #7" />
+      <input type="text" placeholder="목표 #7"/>
     </div>
     <div class="cell input-cell" id="subChart5Cell9">
-      <input type="text" placeholder="목표 #8" />
+      <input type="text" placeholder="목표 #8"/>
     </div>
   </div>
 
-  <!-- 6번 차트 (오른-중앙) -->
+  <!-- 6번 차트 -->
   <div class="sub-chart" id="subChart6">
     <div class="cell" id="subChart6Cell1"></div>
     <div class="cell" id="subChart6Cell2"></div>
@@ -112,7 +111,7 @@
     <div class="cell" id="subChart6Cell9"></div>
   </div>
 
-  <!-- 7번 차트 (왼-아래) -->
+  <!-- 7번 차트 -->
   <div class="sub-chart" id="subChart7">
     <div class="cell" id="subChart7Cell1"></div>
     <div class="cell" id="subChart7Cell2"></div>
@@ -125,7 +124,7 @@
     <div class="cell" id="subChart7Cell9"></div>
   </div>
 
-  <!-- 8번 차트 (가운데-아래) -->
+  <!-- 8번 차트 -->
   <div class="sub-chart" id="subChart8">
     <div class="cell" id="subChart8Cell1"></div>
     <div class="cell" id="subChart8Cell2"></div>
@@ -138,7 +137,7 @@
     <div class="cell" id="subChart8Cell9"></div>
   </div>
 
-  <!-- 9번 차트 (오른-아래) -->
+  <!-- 9번 차트 -->
   <div class="sub-chart" id="subChart9">
     <div class="cell" id="subChart9Cell1"></div>
     <div class="cell" id="subChart9Cell2"></div>
