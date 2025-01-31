@@ -1,94 +1,90 @@
 /* 기본 초기화 */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: sans-serif;
-    margin: 20px;
-    background: #f8f8ff;
-    color: #333;
-  }
-  
-  h1 {
-    margin-bottom: 10px;
-  }
-  
-  p {
-    margin-bottom: 20px;
-    line-height: 1.4;
-  }
-  
-  /* 큰 3×3 그리드 (서브 만다라트 9개 배치) */
-  .big-grid {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 10px;
-  }
-  
-  /* 개별 서브 차트 (각각 3×3) */
-  .sub-chart {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 220px;
-    height: 220px;
-    border: 2px solid #ccc;
-    gap: 1px;
-    background-color: #999;
-  }
-  
-  /* 서브 차트 각 셀 */
-  .cell {
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    text-align: center;
-    padding: 5px;
-  }
-  
-  /* 중앙 셀 강조 */
-  .cell.center {
-    background-color: #ffeeaa;
-    font-weight: bold;
-  }
-  
-  /* 중앙(5번 차트)의 입력칸 스타일 */
-  .input-cell {
-    flex-direction: column;
-    background-color: #fafafa;
-  }
-  
-  .input-cell input {
-    width: 90%;
-    font-size: 12px;
-    padding: 4px;
-    text-align: center;
-    border: 1px solid #ccc;
-  }
-  
-  /* 버튼 */
-  #generateBtn {
-    margin-top: 20px;
-    padding: 8px 16px;
-    background-color: #4395d8;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  #generateBtn:hover {
-    background-color: #2f80c5;
-  }
-  
-  #statusMessage {
-    margin-top: 10px;
-    min-height: 24px;
-    color: #333;
-    font-size: 14px;
-  }
-   
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background: #f8f8ff;
+  color: #333;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+/* 큰 3×3 그리드 (각 칸에 서브 만다라트가 들어감) */
+.big-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 10px;
+}
+
+/* 개별 3×3 서브 차트 */
+.sub-chart {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 220px;
+  height: 220px;
+  border: 2px solid #ccc;
+  gap: 1px;
+  background-color: #999;
+}
+
+/* 서브 차트의 셀 */
+.cell {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  text-align: center;
+  padding: 4px;
+}
+
+.cell.center {
+  background-color: #ffeeaa;
+  font-weight: bold;
+}
+
+/* 중앙(5번 차트)의 입력칸 */
+.input-cell {
+  flex-direction: column;
+  background-color: #fafafa;
+}
+.input-cell input {
+  width: 90%;
+  font-size: 12px;
+  padding: 4px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+/* 버튼 */
+#generateBtn {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #4395d8;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#generateBtn:hover {
+  background-color: #2f80c5;
+}
+
+#statusMessage {
+  margin-top: 10px;
+  min-height: 24px;
+  color: #333;
+  font-size: 14px;
+}
