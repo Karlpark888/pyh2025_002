@@ -3,7 +3,7 @@
  * 여기서는 테스트 편의를 위해 하드코딩 예시를 보여드립니다.
  * 실제로는 서버 사이드에서 OpenAI API를 호출하시기 바랍니다.
  *************************************************************************/
-const OPENAI_API_KEY = "sk-본인실제키를-넣으세요";
+const OPENAI_API_KEY = "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";
 
 /**
  * "목표별 할 일 8개 생성하기" 버튼 클릭 시 실행
