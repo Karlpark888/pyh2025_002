@@ -28,7 +28,7 @@ jobs:
           echo '{ "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}" }' > config.json
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: .
