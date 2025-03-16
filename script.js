@@ -3,8 +3,21 @@
  * 여기서는 테스트 편의를 위해 하드코딩 예시를 보여드립니다.
  * 실제로는 서버 사이드에서 OpenAI API를 호출하시기 바랍니다.
  *************************************************************************/
-const OPENAI_API_KEY = "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";
 
+/* 
+Github에 저장된 API Key 불러오기.
+ */
+
+async function getApiKey() {
+  try {
+    const response = await fetch("config.json");
+    const data = await response.json();
+    return data.OPENAI_API_KEY;
+  } catch (error) {
+    console.error("Failed to fetch API key:", error);
+    return null;
+  }
+}
 /**
  * "목표별 할 일 8개 생성하기" 버튼 클릭 시 실행
  * - 중앙(5번) 차트에서 메인 비전과 8개 목표를 읽음
@@ -31,7 +44,7 @@ async function generateTasks() {
   }
 
   // #5 차트의 나머지 8칸 (#1,#2,#3,#4,#6,#7,#8,#9)은 목표
-  const goalIndices = [1,2,3,4,6,7,8,9];
+  const goalIndices = [1, 2, 3, 4, 6, 7, 8, 9];
   const goals = goalIndices.map((idx) => {
     return { index: idx, text: centerChartInputs[idx] || `목표${idx}(미입력)` };
   });
@@ -44,9 +57,7 @@ async function generateTasks() {
       fillSubChart(index, text, tasks);
     } catch (error) {
       console.error(error);
-      fillSubChart(index, text, [
-        `❌ 할 일 생성 실패: ${error.message}`
-      ]);
+      fillSubChart(index, text, [`❌ 할 일 생성 실패: ${error.message}`]);
     }
   }
 
@@ -57,6 +68,12 @@ async function generateTasks() {
  * GPT에게 "목표 달성을 위한 할 일 8개"를 생성해 달라고 요청
  */
 async function requestGptForGoal(vision, goal) {
+  /* API Key 불러오기. 이후 apiKey 이용해서 사용. */
+  const apiKey = await getApiKey();
+  if (!apiKey) {
+    throw new Error("API Key is missing or invalid");
+  }
+
   const prompt = `
 다음은 내가 이루고자 하는 메인 비전입니다: "${vision}"
 이를 달성하기 위한 목표 중 하나: "${goal}"
@@ -69,7 +86,7 @@ async function requestGptForGoal(vision, goal) {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
@@ -80,7 +97,9 @@ async function requestGptForGoal(vision, goal) {
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI API 에러: ${response.status} - ${response.statusText}`);
+    throw new Error(
+      `OpenAI API 에러: ${response.status} - ${response.statusText}`
+    );
   }
 
   const data = await response.json();
@@ -88,7 +107,7 @@ async function requestGptForGoal(vision, goal) {
 
   // 단순히 줄바꿈 기준으로 분리
   const lines = assistantMessage.split("\n").map((line) => line.trim());
-  return lines.filter((line) => line);  // 빈 줄 제거
+  return lines.filter((line) => line); // 빈 줄 제거
 }
 
 /**
@@ -108,7 +127,7 @@ function fillSubChart(chartIndex, goalText, tasks) {
   }
 
   // 주변 8칸
-  const surroundingCells = [1,2,3,4,6,7,8,9].filter((i) => i !== 5);
+  const surroundingCells = [1, 2, 3, 4, 6, 7, 8, 9].filter((i) => i !== 5);
   surroundingCells.forEach((cellNum, i) => {
     const cellId = `subChart${chartIndex}Cell${cellNum}`;
     const cell = chartEl.querySelector(`#${cellId}`);
