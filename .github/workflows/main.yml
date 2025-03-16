@@ -27,8 +27,8 @@ jobs:
         run: |
           echo '{ "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}" }' > config.json
       
-      - name: Debug
-        run: ls -alR  # ✅ Print all files for debugging
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
